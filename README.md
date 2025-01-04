@@ -97,5 +97,3 @@ The application is deployed on Render. Access the live API at `<render-url>`.
 - Ensure to seed the database with realistic dummy data for testing.
 - Follow best practices for code quality and structure throughout the project.
 
-## License
-This project is licensed under the MIT License.
