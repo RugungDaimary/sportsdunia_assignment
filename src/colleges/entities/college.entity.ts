@@ -10,7 +10,7 @@ import { State } from '../../states/entities/state.entity';
 import { CollegePlacement } from '../../college-placement/entities/college-placement.entity';
 import { CollegeWiseCourse } from '../../college-wise-course/entities/college-wise-course.entity';
 
-@Entity()
+@Entity('colleges')
 export class College {
   @PrimaryGeneratedColumn()
   id!: number;

@@ -21,25 +21,31 @@ export const databaseProviders = [
         `Connecting to database at ${host}:${port} with user ${username}`,
       );
 
-      const dataSource = await createConnection({
-        type: 'postgres',
-        host,
-        port,
-        username,
-        password,
-        database,
-        entities: [
-          City,
-          State,
-          College,
-          CollegePlacement,
-          CollegeWiseCourse,
-          User,
-        ],
-        synchronize: true,
-      });
+      try {
+        const dataSource = await createConnection({
+          type: 'postgres',
+          host,
+          port,
+          username,
+          password,
+          database,
+          entities: [
+            City,
+            State,
+            College,
+            CollegePlacement,
+            CollegeWiseCourse,
+            User,
+          ],
+          synchronize: true,
+        });
 
-      return dataSource;
+        console.log('Successfully connected to the database');
+        return dataSource;
+      } catch (error) {
+        console.error('Error connecting to the database', error);
+        throw error;
+      }
     },
     inject: [ConfigService],
   },

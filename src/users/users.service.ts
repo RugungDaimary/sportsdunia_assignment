@@ -1,5 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -13,32 +14,32 @@ export class UsersService {
 
   async create(createUserDto: CreateUserDto): Promise<User> {
     const user = this.usersRepository.create(createUserDto);
-    return this.usersRepository.save(user);
+    const savedUser = await this.usersRepository.save(user);
+    console.log('Successfully created a new user entry in the database');
+    return savedUser;
   }
 
   async findAll(): Promise<User[]> {
     return this.usersRepository.find();
   }
 
-  async findOne(id: number): Promise<User> {
-    const user = await this.usersRepository.findOne({ where: { id } });
+  async findOne(email: string): Promise<User> {
+    const user = await this.usersRepository.findOne({ where: { email } });
     if (!user) {
-      throw new Error(`User with id ${id} not found`);
+      throw new NotFoundException(`User with email ${email} not found`);
     }
     return user;
   }
 
-  async update(id: number, updateUserDto: CreateUserDto): Promise<User> {
-    await this.usersRepository.update(id, updateUserDto);
-    return this.findOne(id);
+  async update(email: string, updateUserDto: UpdateUserDto): Promise<User> {
+    await this.usersRepository.update({ email }, updateUserDto);
+    return this.findOne(email);
   }
 
-  async remove(id: number): Promise<void> {
-    await this.usersRepository.delete(id);
-  }
-
-  async findByUsername(username: string): Promise<User | undefined> {
-    const user = await this.usersRepository.findOne({ where: { username } });
-    return user ?? undefined;
+  async remove(email: string): Promise<void> {
+    const deleteResult = await this.usersRepository.delete({ email });
+    if (deleteResult.affected === 0) {
+      throw new NotFoundException(`User with email ${email} not found`);
+    }
   }
 }

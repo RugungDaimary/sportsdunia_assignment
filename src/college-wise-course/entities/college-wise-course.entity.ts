@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { College } from '../../colleges/entities/college.entity';
 
-@Entity()
+@Entity('college_wise_courses')
 export class CollegeWiseCourse {
   @PrimaryGeneratedColumn()
   id!: number;

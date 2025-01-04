@@ -67,7 +67,7 @@ export class CollegesService {
     return placementSection;
   }
 
-  async getColleges(city: string, state: string): Promise<College[]> {
+  async getColleges(city?: string, state?: string): Promise<College[]> {
     const query = this.collegeRepository.createQueryBuilder('college');
 
     if (city) {

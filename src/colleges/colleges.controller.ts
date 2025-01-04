@@ -20,9 +20,9 @@ export class CollegesController {
 
   @Get()
   async getColleges(
-    @Query('city') city: string,
-    @Query('state') state: string,
+    @Query('city') city?: string,
+    @Query('state') state?: string,
   ) {
-    return this.collegesService.getColleges(city, state);
+    return this.collegesService.getColleges(city ?? '', state ?? '');
   }
 }
